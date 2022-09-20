@@ -9,7 +9,7 @@ function RowPost(props) {
         width: '100%',
         playerVars: {
             // https://developers.google.com/youtube/player_parameters
-            autoplay: 0,
+            autoplay: 1,
         },
     };
     const { title, isSmall, url, istrailer } = props
@@ -19,14 +19,18 @@ function RowPost(props) {
     useEffect(() => {
         console.log("hello")
         axios.get(url).then(e => {
-            setMovies(e.data.results)
+            if (e.data.results.length !== 0) {
+                setMovies(e.data.results)
+            }
         })
     }, [])
     const handleMovie = (id) => {
         axios.get(`/movie/${id}/videos?api_key=d03799692be1c26faf0ade18a4205f9f&language=en-US`).then(e => {
-            console.log(e.data.results[0].key)
-            setId(e.data.results[0].key)
-            setVideo(!video)
+            if (e.data.results.length !== 0) {
+                console.log(e.data.results[0].key)
+                setId(e.data.results[0].key)
+                setVideo(!video)
+            }
         })
     }
     return (
